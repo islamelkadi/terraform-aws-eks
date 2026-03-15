@@ -2,7 +2,7 @@
 # This creates a VPC with private subnets for secure EKS deployment
 
 module "vpc" {
-  source = "github.com/islamelkadi/terraform-aws-vpc//modules/vpc?ref=v1.0.0"
+  source = "git::https://github.com/islamelkadi/terraform-aws-vpc.git//modules/vpc?ref=v1.0.1"
 
   namespace   = var.namespace
   environment = var.environment
@@ -10,7 +10,7 @@ module "vpc" {
   region      = var.region
 
   # VPC configuration
-  vpc_cidr = "10.0.0.0/16"
+  cidr_block = "10.0.0.0/16"
 
   # Availability zones (use first 3 AZs in region)
   availability_zones = ["${var.region}a", "${var.region}b", "${var.region}c"]
@@ -34,20 +34,6 @@ module "vpc" {
     var.tags,
     {
       Purpose = "EKS Cluster VPC"
-      # EKS-specific tags for subnet discovery
-      "kubernetes.io/role/internal-elb" = "1"
     }
   )
-
-  # EKS-specific tags for private subnets
-  private_subnet_tags = {
-    "kubernetes.io/role/internal-elb"                                       = "1"
-    "kubernetes.io/cluster/${var.namespace}-${var.environment}-${var.name}" = "shared"
-  }
-
-  # EKS-specific tags for public subnets  
-  public_subnet_tags = {
-    "kubernetes.io/role/elb"                                                = "1"
-    "kubernetes.io/cluster/${var.namespace}-${var.environment}-${var.name}" = "shared"
-  }
 }

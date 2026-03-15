@@ -80,6 +80,20 @@ kubectl get nodes
 kubectl get pods -A
 ```
 
+## Infrastructure Components
+
+### VPC Module
+This example uses the terraform-aws-vpc module v1.0.1 which includes:
+- **VPC Flow Logs**: Enabled by default with CloudWatch integration
+- **Multi-AZ NAT Gateways**: High availability internet access for private subnets
+- **Proper Subnet Tagging**: EKS-compatible tags for load balancer discovery
+
+### KMS Encryption
+Customer-managed KMS key for:
+- EKS cluster secrets encryption
+- Automatic key rotation enabled
+- Service principal access for EKS
+
 ## Security Features
 
 - **Private API Endpoint**: Cluster API only accessible from VPC
@@ -121,7 +135,7 @@ No providers.
 |------|--------|---------|
 | <a name="module_eks_cluster"></a> [eks\_cluster](#module\_eks\_cluster) | ../ | n/a |
 | <a name="module_kms_key"></a> [kms\_key](#module\_kms\_key) | github.com/islamelkadi/terraform-aws-kms | v1.0.2 |
-| <a name="module_vpc"></a> [vpc](#module\_vpc) | github.com/islamelkadi/terraform-aws-vpc//modules/vpc | v1.0.0 |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | git::https://github.com/islamelkadi/terraform-aws-vpc.git//modules/vpc | v1.0.1 |
 
 ## Resources
 

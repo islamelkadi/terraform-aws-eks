@@ -87,11 +87,11 @@ module "eks_cluster" {
   subnet_ids = module.vpc.private_subnet_ids
 
   # Security configuration
-  kms_key_arn                   = module.kms_key.key_arn
-  endpoint_public_access        = var.endpoint_public_access
-  endpoint_private_access       = var.endpoint_private_access
-  cluster_log_types            = var.cluster_log_types
-  additional_node_policy_arns  = var.additional_node_policy_arns
+  kms_key_arn                 = module.kms_key.key_arn
+  endpoint_public_access      = var.endpoint_public_access
+  endpoint_private_access     = var.endpoint_private_access
+  cluster_log_types           = var.cluster_log_types
+  additional_node_policy_arns = var.additional_node_policy_arns
 
   tags = var.tags
 }
@@ -103,19 +103,20 @@ module "eks_cluster" {
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.14.3 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.34 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | >= 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.34 |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | n/a |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.36.0 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.2.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_metadata"></a> [metadata](#module\_metadata) | github.com/islamelkadi/terraform-aws-metadata | v1.2.0 |
+| <a name="module_metadata"></a> [metadata](#module\_metadata) | github.com/islamelkadi/terraform-aws-metadata | v1.1.1 |
 
 ## Resources
 

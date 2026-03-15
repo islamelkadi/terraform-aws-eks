@@ -11,21 +11,8 @@ module "kms_key" {
 
   description = "KMS key for EKS cluster ${var.name} secrets encryption"
 
-  # Key policy for EKS service
-  key_policy_statements = [
-    {
-      sid    = "AllowEKSService"
-      effect = "Allow"
-      principals = {
-        Service = ["eks.amazonaws.com"]
-      }
-      actions = [
-        "kms:Decrypt",
-        "kms:DescribeKey"
-      ]
-      resources = ["*"]
-    }
-  ]
+  # Allow EKS service to use the key
+  service_principals = ["eks.amazonaws.com"]
 
   tags = merge(
     var.tags,

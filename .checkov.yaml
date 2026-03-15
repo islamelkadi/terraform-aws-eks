@@ -1,0 +1,7 @@
+# Checkov configuration for terraform-aws-eks
+# Suppressions for checks that are not applicable to example/demo code
+
+skip-check:
+  # Terraform Module Sources - Using semantic versioning tags
+  - CKV_TF_1  # Using semantic version tags (?ref=v1.0.0) instead of commit hashes for better maintainability
+  - CKV_TF_2  # Using semantic version tags which is a valid versioning strategy for stable releases

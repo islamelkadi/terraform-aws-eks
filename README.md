@@ -67,64 +67,33 @@ This module suppresses certain Checkov checks documented in `.checkov.yaml`:
 
 ```hcl
 # Primary Module Example - This demonstrates the terraform-aws-eks module
-# Supporting infrastructure (VPC, KMS) is created inline for simplicity.
+# Supporting infrastructure (KMS, VPC) is defined in separate files
+# to keep this example focused on the module's core functionality.
 #
 # EKS Auto Mode Cluster Example
-# Demonstrates EKS with private endpoint, KMS encryption, and audit logging
 
-# VPC for EKS
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
-
-  name = "${var.namespace}-${var.environment}-${var.name}"
-  cidr = var.vpc_cidr
-
-  azs             = var.availability_zones
-  private_subnets = var.private_subnet_cidrs
-  public_subnets  = var.public_subnet_cidrs
-
-  enable_nat_gateway   = true
-  single_nat_gateway   = true
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-
-  # Tags required for EKS Auto Mode
-  public_subnet_tags = {
-    "kubernetes.io/role/elb" = 1
-  }
-  private_subnet_tags = {
-    "kubernetes.io/role/internal-elb" = 1
-  }
-
-  tags = var.tags
-}
-
-# KMS key for EKS secrets encryption
-resource "aws_kms_key" "eks" {
-  description             = "KMS key for EKS secrets encryption"
-  deletion_window_in_days = 7
-  enable_key_rotation     = true
-  tags                    = var.tags
-}
-
-# EKS Cluster
-module "eks" {
+module "eks_cluster" {
   source = "../"
 
   namespace   = var.namespace
   environment = var.environment
   name        = var.name
   region      = var.region
-  tags        = var.tags
 
-  # EKS configuration
+  # Cluster configuration
   cluster_version = var.cluster_version
-  subnet_ids      = module.vpc.private_subnets
-  kms_key_arn     = aws_kms_key.eks.arn
 
-  # Additional node IAM policies (optional)
-  additional_node_policy_arns = var.additional_node_policy_arns
+  # Network configuration - use private subnets for security
+  subnet_ids = module.vpc.private_subnet_ids
+
+  # Security configuration
+  kms_key_arn                   = module.kms_key.key_arn
+  endpoint_public_access        = var.endpoint_public_access
+  endpoint_private_access       = var.endpoint_private_access
+  cluster_log_types            = var.cluster_log_types
+  additional_node_policy_arns  = var.additional_node_policy_arns
+
+  tags = var.tags
 }
 ```
 
@@ -134,20 +103,19 @@ module "eks" {
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.14.3 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.34 |
-| <a name="requirement_tls"></a> [tls](#requirement\_tls) | >= 4.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.36.0 |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.2.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.34 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | n/a |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_metadata"></a> [metadata](#module\_metadata) | github.com/islamelkadi/terraform-aws-metadata | v1.0.0 |
+| <a name="module_metadata"></a> [metadata](#module\_metadata) | github.com/islamelkadi/terraform-aws-metadata | v1.2.0 |
 
 ## Resources
 
@@ -201,7 +169,7 @@ module "eks" {
 
 ## Example
 
-See [example/](example/) for a complete working example.
+See [example/](example/) for a complete working example with all features.
 
 ## License
 

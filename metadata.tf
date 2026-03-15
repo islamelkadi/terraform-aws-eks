@@ -2,11 +2,11 @@
 # Provides standardized naming, tagging, and security controls
 
 module "metadata" {
-  source = "github.com/islamelkadi/terraform-aws-metadata?ref=v1.0.3"
+  source = "github.com/islamelkadi/terraform-aws-metadata?ref=v1.1.0"
 
   namespace     = var.namespace
   project_name  = var.name
   environment   = var.environment
-  resource_type = "cloudfront"
+  resource_type = "eks"
   region        = var.region
 }

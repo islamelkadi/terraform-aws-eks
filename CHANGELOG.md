@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.0.1...v1.0.2) (2026-03-15)
+
+
+### Bug Fixes
+
+* update VPC module to v1.0.1 to resolve flow logs module path issue ([d5f4a62](https://github.com/islamelkadi/terraform-aws-eks/commit/d5f4a622ee6bce4e07228d2f85bc1fbabd300749))
+
 ## [1.0.1](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.0.0...v1.0.1) (2026-03-15)
 
 

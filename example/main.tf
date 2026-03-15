@@ -19,11 +19,11 @@ module "eks_cluster" {
   subnet_ids = module.vpc.private_subnet_ids
 
   # Security configuration
-  kms_key_arn                   = module.kms_key.key_arn
-  endpoint_public_access        = var.endpoint_public_access
-  endpoint_private_access       = var.endpoint_private_access
-  cluster_log_types            = var.cluster_log_types
-  additional_node_policy_arns  = var.additional_node_policy_arns
+  kms_key_arn                 = module.kms_key.key_arn
+  endpoint_public_access      = var.endpoint_public_access
+  endpoint_private_access     = var.endpoint_private_access
+  cluster_log_types           = var.cluster_log_types
+  additional_node_policy_arns = var.additional_node_policy_arns
 
   tags = var.tags
 }

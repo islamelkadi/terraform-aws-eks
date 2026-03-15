@@ -21,7 +21,7 @@ module "vpc" {
 
   # Enable NAT Gateway for private subnet internet access
   enable_nat_gateway = true
-  single_nat_gateway = false  # Use one NAT per AZ for HA
+  single_nat_gateway = false # Use one NAT per AZ for HA
 
   # Enable VPC Flow Logs
   enable_flow_logs = true
@@ -41,13 +41,13 @@ module "vpc" {
 
   # EKS-specific tags for private subnets
   private_subnet_tags = {
-    "kubernetes.io/role/internal-elb" = "1"
+    "kubernetes.io/role/internal-elb"                                       = "1"
     "kubernetes.io/cluster/${var.namespace}-${var.environment}-${var.name}" = "shared"
   }
 
   # EKS-specific tags for public subnets  
   public_subnet_tags = {
-    "kubernetes.io/role/elb" = "1"
+    "kubernetes.io/role/elb"                                                = "1"
     "kubernetes.io/cluster/${var.namespace}-${var.environment}-${var.name}" = "shared"
   }
 }

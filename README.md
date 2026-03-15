@@ -1,5 +1,9 @@
 # Terraform AWS EKS Auto Mode Module
 
+[![Terraform Security](https://github.com/islamelkadi/terraform-aws-eks/actions/workflows/terraform-security.yaml/badge.svg)](https://github.com/islamelkadi/terraform-aws-eks/actions/workflows/terraform-security.yaml)
+[![Terraform Lint & Validation](https://github.com/islamelkadi/terraform-aws-eks/actions/workflows/terraform-lint.yaml/badge.svg)](https://github.com/islamelkadi/terraform-aws-eks/actions/workflows/terraform-lint.yaml)
+[![Terraform Docs](https://github.com/islamelkadi/terraform-aws-eks/actions/workflows/terraform-docs.yaml/badge.svg)](https://github.com/islamelkadi/terraform-aws-eks/actions/workflows/terraform-docs.yaml)
+
 This module creates an Amazon EKS cluster with Auto Mode enabled, private API endpoint, KMS secrets encryption, audit logging, and an OIDC provider for IRSA.
 
 ## Table of Contents

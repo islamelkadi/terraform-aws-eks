@@ -1,3 +1,10 @@
+## [1.1.0](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.0.2...v1.1.0) (2026-03-16)
+
+
+### Features
+
+* Add flexible security group configuration to EKS module ([09dce47](https://github.com/islamelkadi/terraform-aws-eks/commit/09dce476dc3dfbad4a0eca994a38b25403dae638))
+
 ## [1.0.2](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.0.1...v1.0.2) (2026-03-15)
 
 

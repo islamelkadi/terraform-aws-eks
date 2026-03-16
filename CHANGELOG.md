@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.1.0...v1.1.1) (2026-03-16)
+
+
+### Bug Fixes
+
+* Resolve security group rule conflicts in EKS module ([ff8fbe8](https://github.com/islamelkadi/terraform-aws-eks/commit/ff8fbe881945a4a6ab517b1d5cc3529524bcc532))
+
 ## [1.1.0](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.0.2...v1.1.0) (2026-03-16)
 
 

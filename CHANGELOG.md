@@ -1,3 +1,15 @@
+## [1.1.2](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.1.1...v1.1.2) (2026-03-16)
+
+
+### Bug Fixes
+
+* Resolve security group rule conflicts with separate resources ([ef1f130](https://github.com/islamelkadi/terraform-aws-eks/commit/ef1f13084fcfad384d1925ed81dfceda8bfddf88))
+
+
+### Documentation
+
+* Update README with new security group configuration options ([59cd401](https://github.com/islamelkadi/terraform-aws-eks/commit/59cd4018483f026b22a3ea9cbe1650001198e9b4))
+
 ## [1.1.1](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.1.0...v1.1.1) (2026-03-16)
 
 

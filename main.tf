@@ -153,38 +153,100 @@ resource "aws_security_group" "cluster" {
   })
 }
 
-# Security Group Ingress Rules
-resource "aws_security_group_rule" "ingress" {
-  count = var.create_security_group ? length(var.ingress_rules) : 0
+# Security Group Ingress Rules - CIDR-based
+resource "aws_security_group_rule" "ingress_cidr" {
+  count = var.create_security_group ? length([
+    for rule in var.ingress_rules : rule
+    if length(rule.cidr_blocks) > 0 || length(rule.ipv6_cidr_blocks) > 0
+  ]) : 0
 
   type              = "ingress"
   from_port         = var.ingress_rules[count.index].from_port
   to_port           = var.ingress_rules[count.index].to_port
   protocol          = var.ingress_rules[count.index].protocol
+  cidr_blocks       = var.ingress_rules[count.index].cidr_blocks
+  ipv6_cidr_blocks  = var.ingress_rules[count.index].ipv6_cidr_blocks
   description       = var.ingress_rules[count.index].description
   security_group_id = aws_security_group.cluster[0].id
-
-  # Only set one of these mutually exclusive arguments
-  cidr_blocks              = var.ingress_rules[count.index].source_security_group_id == null && !var.ingress_rules[count.index].self ? var.ingress_rules[count.index].cidr_blocks : null
-  ipv6_cidr_blocks         = var.ingress_rules[count.index].source_security_group_id == null && !var.ingress_rules[count.index].self ? var.ingress_rules[count.index].ipv6_cidr_blocks : null
-  source_security_group_id = !var.ingress_rules[count.index].self ? var.ingress_rules[count.index].source_security_group_id : null
-  self                     = var.ingress_rules[count.index].self
 }
 
-# Security Group Egress Rules
-resource "aws_security_group_rule" "egress" {
-  count = var.create_security_group ? length(var.egress_rules) : 0
+# Security Group Ingress Rules - Security Group-based
+resource "aws_security_group_rule" "ingress_sg" {
+  count = var.create_security_group ? length([
+    for rule in var.ingress_rules : rule
+    if rule.source_security_group_id != null
+  ]) : 0
+
+  type                     = "ingress"
+  from_port                = [for rule in var.ingress_rules : rule if rule.source_security_group_id != null][count.index].from_port
+  to_port                  = [for rule in var.ingress_rules : rule if rule.source_security_group_id != null][count.index].to_port
+  protocol                 = [for rule in var.ingress_rules : rule if rule.source_security_group_id != null][count.index].protocol
+  source_security_group_id = [for rule in var.ingress_rules : rule if rule.source_security_group_id != null][count.index].source_security_group_id
+  description              = [for rule in var.ingress_rules : rule if rule.source_security_group_id != null][count.index].description
+  security_group_id        = aws_security_group.cluster[0].id
+}
+
+# Security Group Ingress Rules - Self-referencing
+resource "aws_security_group_rule" "ingress_self" {
+  count = var.create_security_group ? length([
+    for rule in var.ingress_rules : rule
+    if rule.self == true
+  ]) : 0
+
+  type              = "ingress"
+  from_port         = [for rule in var.ingress_rules : rule if rule.self == true][count.index].from_port
+  to_port           = [for rule in var.ingress_rules : rule if rule.self == true][count.index].to_port
+  protocol          = [for rule in var.ingress_rules : rule if rule.self == true][count.index].protocol
+  self              = true
+  description       = [for rule in var.ingress_rules : rule if rule.self == true][count.index].description
+  security_group_id = aws_security_group.cluster[0].id
+}
+
+# Security Group Egress Rules - CIDR-based
+resource "aws_security_group_rule" "egress_cidr" {
+  count = var.create_security_group ? length([
+    for rule in var.egress_rules : rule
+    if length(rule.cidr_blocks) > 0 || length(rule.ipv6_cidr_blocks) > 0
+  ]) : 0
 
   type              = "egress"
   from_port         = var.egress_rules[count.index].from_port
   to_port           = var.egress_rules[count.index].to_port
   protocol          = var.egress_rules[count.index].protocol
+  cidr_blocks       = var.egress_rules[count.index].cidr_blocks
+  ipv6_cidr_blocks  = var.egress_rules[count.index].ipv6_cidr_blocks
   description       = var.egress_rules[count.index].description
   security_group_id = aws_security_group.cluster[0].id
+}
 
-  # Only set one of these mutually exclusive arguments
-  cidr_blocks              = var.egress_rules[count.index].destination_security_group_id == null && !var.egress_rules[count.index].self ? var.egress_rules[count.index].cidr_blocks : null
-  ipv6_cidr_blocks         = var.egress_rules[count.index].destination_security_group_id == null && !var.egress_rules[count.index].self ? var.egress_rules[count.index].ipv6_cidr_blocks : null
-  source_security_group_id = !var.egress_rules[count.index].self ? var.egress_rules[count.index].destination_security_group_id : null
-  self                     = var.egress_rules[count.index].self
+# Security Group Egress Rules - Security Group-based
+resource "aws_security_group_rule" "egress_sg" {
+  count = var.create_security_group ? length([
+    for rule in var.egress_rules : rule
+    if rule.destination_security_group_id != null
+  ]) : 0
+
+  type                     = "egress"
+  from_port                = [for rule in var.egress_rules : rule if rule.destination_security_group_id != null][count.index].from_port
+  to_port                  = [for rule in var.egress_rules : rule if rule.destination_security_group_id != null][count.index].to_port
+  protocol                 = [for rule in var.egress_rules : rule if rule.destination_security_group_id != null][count.index].protocol
+  source_security_group_id = [for rule in var.egress_rules : rule if rule.destination_security_group_id != null][count.index].destination_security_group_id
+  description              = [for rule in var.egress_rules : rule if rule.destination_security_group_id != null][count.index].description
+  security_group_id        = aws_security_group.cluster[0].id
+}
+
+# Security Group Egress Rules - Self-referencing
+resource "aws_security_group_rule" "egress_self" {
+  count = var.create_security_group ? length([
+    for rule in var.egress_rules : rule
+    if rule.self == true
+  ]) : 0
+
+  type              = "egress"
+  from_port         = [for rule in var.egress_rules : rule if rule.self == true][count.index].from_port
+  to_port           = [for rule in var.egress_rules : rule if rule.self == true][count.index].to_port
+  protocol          = [for rule in var.egress_rules : rule if rule.self == true][count.index].protocol
+  self              = true
+  description       = [for rule in var.egress_rules : rule if rule.self == true][count.index].description
+  security_group_id = aws_security_group.cluster[0].id
 }

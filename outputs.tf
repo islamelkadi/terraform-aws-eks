@@ -49,3 +49,22 @@ output "tags" {
   description = "Tags applied to the EKS cluster"
   value       = aws_eks_cluster.this.tags
 }
+# Security Group Outputs
+output "security_group_id" {
+  description = "ID of the custom security group (if created)"
+  value       = var.create_security_group ? aws_security_group.cluster[0].id : null
+}
+
+output "security_group_arn" {
+  description = "ARN of the custom security group (if created)"
+  value       = var.create_security_group ? aws_security_group.cluster[0].arn : null
+}
+
+output "all_security_group_ids" {
+  description = "List of all security group IDs attached to the EKS cluster (custom + additional + EKS-managed)"
+  value = concat(
+    var.create_security_group ? [aws_security_group.cluster[0].id] : [],
+    var.additional_security_group_ids,
+    [aws_eks_cluster.this.vpc_config[0].cluster_security_group_id]
+  )
+}

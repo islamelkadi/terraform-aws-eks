@@ -163,3 +163,71 @@ variable "security_control_overrides" {
     justification            = ""
   }
 }
+# Security Group Configuration
+variable "create_security_group" {
+  description = "Whether to create a custom security group for the EKS cluster (in addition to EKS-managed security groups)"
+  type        = bool
+  default     = false
+}
+
+variable "security_group_name" {
+  description = "Name for the custom security group (if create_security_group is true)"
+  type        = string
+  default     = null
+}
+
+variable "security_group_description" {
+  description = "Description for the custom security group"
+  type        = string
+  default     = "Custom security group for EKS cluster"
+}
+
+variable "vpc_id" {
+  description = "VPC ID where the security group will be created (required if create_security_group is true)"
+  type        = string
+  default     = null
+}
+
+variable "additional_security_group_ids" {
+  description = "List of additional security group IDs to attach to the EKS cluster (externally managed)"
+  type        = list(string)
+  default     = []
+}
+
+variable "ingress_rules" {
+  description = "List of ingress rules for the custom security group"
+  type = list(object({
+    from_port                = number
+    to_port                  = number
+    protocol                 = string
+    cidr_blocks              = optional(list(string), [])
+    ipv6_cidr_blocks         = optional(list(string), [])
+    source_security_group_id = optional(string)
+    self                     = optional(bool, false)
+    description              = optional(string, "")
+  }))
+  default = []
+}
+
+variable "egress_rules" {
+  description = "List of egress rules for the custom security group"
+  type = list(object({
+    from_port                     = number
+    to_port                       = number
+    protocol                      = string
+    cidr_blocks                   = optional(list(string), [])
+    ipv6_cidr_blocks              = optional(list(string), [])
+    destination_security_group_id = optional(string)
+    self                          = optional(bool, false)
+    description                   = optional(string, "")
+  }))
+  default = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+      description = "Allow all outbound traffic"
+    }
+  ]
+}

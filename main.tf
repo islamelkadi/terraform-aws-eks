@@ -68,6 +68,10 @@ resource "aws_eks_cluster" "this" {
     subnet_ids              = var.subnet_ids
     endpoint_public_access  = var.endpoint_public_access
     endpoint_private_access = var.endpoint_private_access
+    security_group_ids      = concat(
+      var.create_security_group ? [aws_security_group.cluster[0].id] : [],
+      var.additional_security_group_ids
+    )
   }
 
   # KMS secrets encryption
@@ -135,4 +139,48 @@ resource "aws_iam_openid_connect_provider" "cluster" {
   url             = aws_eks_cluster.this.identity[0].oidc[0].issuer
 
   tags = local.tags
+}
+# Custom Security Group (optional)
+resource "aws_security_group" "cluster" {
+  count = var.create_security_group ? 1 : 0
+
+  name        = var.security_group_name != null ? var.security_group_name : "${local.cluster_name}-sg"
+  description = var.security_group_description
+  vpc_id      = var.vpc_id
+
+  tags = merge(local.tags, {
+    Name = var.security_group_name != null ? var.security_group_name : "${local.cluster_name}-sg"
+  })
+}
+
+# Security Group Ingress Rules
+resource "aws_security_group_rule" "ingress" {
+  count = var.create_security_group ? length(var.ingress_rules) : 0
+
+  type              = "ingress"
+  from_port         = var.ingress_rules[count.index].from_port
+  to_port           = var.ingress_rules[count.index].to_port
+  protocol          = var.ingress_rules[count.index].protocol
+  cidr_blocks       = var.ingress_rules[count.index].cidr_blocks
+  ipv6_cidr_blocks  = var.ingress_rules[count.index].ipv6_cidr_blocks
+  source_security_group_id = var.ingress_rules[count.index].source_security_group_id
+  self              = var.ingress_rules[count.index].self
+  description       = var.ingress_rules[count.index].description
+  security_group_id = aws_security_group.cluster[0].id
+}
+
+# Security Group Egress Rules
+resource "aws_security_group_rule" "egress" {
+  count = var.create_security_group ? length(var.egress_rules) : 0
+
+  type                     = "egress"
+  from_port                = var.egress_rules[count.index].from_port
+  to_port                  = var.egress_rules[count.index].to_port
+  protocol                 = var.egress_rules[count.index].protocol
+  cidr_blocks              = var.egress_rules[count.index].cidr_blocks
+  ipv6_cidr_blocks         = var.egress_rules[count.index].ipv6_cidr_blocks
+  source_security_group_id = var.egress_rules[count.index].destination_security_group_id
+  self                     = var.egress_rules[count.index].self
+  description              = var.egress_rules[count.index].description
+  security_group_id        = aws_security_group.cluster[0].id
 }

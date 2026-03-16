@@ -51,3 +51,17 @@ output "private_subnet_ids" {
   description = "Private subnet IDs"
   value       = module.vpc.private_subnet_ids
 }
+output "custom_security_group_id" {
+  description = "ID of the custom security group (if created)"
+  value       = module.eks_cluster.security_group_id
+}
+
+output "external_security_group_id" {
+  description = "ID of the external security group"
+  value       = aws_security_group.external.id
+}
+
+output "all_security_group_ids" {
+  description = "All security group IDs attached to the EKS cluster"
+  value       = module.eks_cluster.all_security_group_ids
+}

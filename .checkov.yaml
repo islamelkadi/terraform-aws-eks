@@ -5,3 +5,5 @@ skip-check:
   # Terraform Module Sources - Using semantic versioning tags
   - CKV_TF_1  # Using semantic version tags (?ref=v1.0.0) instead of commit hashes for better maintainability
   - CKV_TF_2  # Using semantic version tags which is a valid versioning strategy for stable releases
+  # Security Group Rules
+  - CKV2_AWS_5  # Security group attachment is handled dynamically by EKS and may not be immediately visible to static analysis

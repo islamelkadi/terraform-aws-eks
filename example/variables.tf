@@ -61,3 +61,8 @@ variable "tags" {
     Project = "eks-example"
   }
 }
+variable "create_security_group" {
+  description = "Whether to create a custom security group for the EKS cluster"
+  type        = bool
+  default     = false
+}

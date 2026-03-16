@@ -68,7 +68,7 @@ resource "aws_eks_cluster" "this" {
     subnet_ids              = var.subnet_ids
     endpoint_public_access  = var.endpoint_public_access
     endpoint_private_access = var.endpoint_private_access
-    security_group_ids      = concat(
+    security_group_ids = concat(
       var.create_security_group ? [aws_security_group.cluster[0].id] : [],
       var.additional_security_group_ids
     )

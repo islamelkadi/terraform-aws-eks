@@ -38,11 +38,11 @@ module "eks_cluster" {
   subnet_ids = module.vpc.private_subnet_ids
 
   # Security Group Configuration (demonstrates both patterns)
-  create_security_group        = var.create_security_group
-  vpc_id                      = module.vpc.vpc_id
-  security_group_description  = "Custom security group for EKS cluster with additional rules"
+  create_security_group         = var.create_security_group
+  vpc_id                        = module.vpc.vpc_id
+  security_group_description    = "Custom security group for EKS cluster with additional rules"
   additional_security_group_ids = var.create_security_group ? [] : [aws_security_group.external.id]
-  
+
   # Custom ingress rules (only used if create_security_group is true)
   ingress_rules = [
     {

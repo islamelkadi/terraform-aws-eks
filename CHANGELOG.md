@@ -1,3 +1,10 @@
+## [1.1.6](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.1.5...v1.1.6) (2026-03-18)
+
+
+### Bug Fixes
+
+* add missing sts:TagSession permission ([6a0dc1a](https://github.com/islamelkadi/terraform-aws-eks/commit/6a0dc1a349846da676e73733356117900de42869))
+
 ## [1.1.5](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.1.4...v1.1.5) (2026-03-18)
 
 

@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.1.2...v1.1.3) (2026-03-18)
+
+
+### Bug Fixes
+
+* convert SG rules from count to for_each to resolve unknown value at plan time ([353b487](https://github.com/islamelkadi/terraform-aws-eks/commit/353b48710cc170948b3e586b3013dcbe8423e1fe))
+
 ## [1.1.2](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.1.1...v1.1.2) (2026-03-16)
 
 

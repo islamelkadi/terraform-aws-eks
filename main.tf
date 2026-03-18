@@ -165,7 +165,7 @@ resource "aws_security_group_rule" "ingress" {
   to_port                  = each.value.to_port
   protocol                 = each.value.protocol
   cidr_blocks              = length(each.value.cidr_blocks) > 0 ? each.value.cidr_blocks : null
-  ipv6_cidr_blocks         = length(each.value.cidr_blocks) > 0 ? each.value.ipv6_cidr_blocks : null
+  ipv6_cidr_blocks         = length(each.value.ipv6_cidr_blocks) > 0 ? each.value.ipv6_cidr_blocks : null
   source_security_group_id = each.value.source_security_group_id
   self                     = each.value.self ? true : null
   description              = each.value.description
@@ -184,8 +184,8 @@ resource "aws_security_group_rule" "egress" {
   to_port                  = each.value.to_port
   protocol                 = each.value.protocol
   cidr_blocks              = length(each.value.cidr_blocks) > 0 ? each.value.cidr_blocks : null
-  ipv6_cidr_blocks         = length(each.value.cidr_blocks) > 0 ? each.value.ipv6_cidr_blocks : null
-  source_security_group_id = each.value.source_security_group_id
+  ipv6_cidr_blocks         = length(each.value.ipv6_cidr_blocks) > 0 ? each.value.ipv6_cidr_blocks : null
+  source_security_group_id = each.value.destination_security_group_id
   self                     = each.value.self ? true : null
   description              = each.value.description
   security_group_id        = aws_security_group.cluster[0].id

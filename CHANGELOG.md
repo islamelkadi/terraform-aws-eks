@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.1.3...v1.1.4) (2026-03-18)
+
+
+### Bug Fixes
+
+* consolidate 6 SG rule resources into 2 using static index keys ([38282a1](https://github.com/islamelkadi/terraform-aws-eks/commit/38282a195340ba5fa49556c3533800bb23b77512))
+
 ## [1.1.3](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.1.2...v1.1.3) (2026-03-18)
 
 

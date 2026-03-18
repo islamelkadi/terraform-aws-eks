@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.1.4...v1.1.5) (2026-03-18)
+
+
+### Bug Fixes
+
+* correct ipv6_cidr_blocks check and egress SG attribute name ([d6bd1f6](https://github.com/islamelkadi/terraform-aws-eks/commit/d6bd1f6866fa55951b1170dab276cfde77a3063f))
+
 ## [1.1.4](https://github.com/islamelkadi/terraform-aws-eks/compare/v1.1.3...v1.1.4) (2026-03-18)
 
 

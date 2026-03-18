@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "cluster_assume_role" {
       identifiers = ["eks.amazonaws.com"]
     }
 
-    actions = ["sts:AssumeRole"]
+    actions = ["sts:AssumeRole", "sts:TagSession"]
   }
 }
 
@@ -105,7 +105,7 @@ data "aws_iam_policy_document" "node_assume_role" {
       identifiers = ["ec2.amazonaws.com"]
     }
 
-    actions = ["sts:AssumeRole"]
+    actions = ["sts:AssumeRole", "sts:TagSession"]
   }
 }
 
